@@ -1,0 +1,18 @@
+onRecordAfterCreateRequest((e)=>{
+	let id=e.record.getId()
+	console.log("\nReminder hook\n-------\n");
+	let data=$apis.requestInfo(e.httpContext).data;
+	let type=data["type"];
+	console.log("Type:"+type);
+	console.log("Id:", id)
+	if(type=="task"){
+		let collection=$app.dao().findCollectionByNameOrId("alert");
+		 const record = new Record(collection, { "reminder": id})
+        	$app.dao().saveRecord(record)
+
+	}else{
+		
+	}
+	 console.log("\n\n-------\n");
+
+},"reminder")
