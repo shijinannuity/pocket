@@ -1,0 +1,30 @@
+onRecordBeforeUpdateRequest((e)=>{
+	let info=$apis.requestInfo(e.httpContext);
+	let data=info.data;
+	let oldrecord=e.record.originalCopy();
+	let record=e.record;
+	let id=record.get("id");
+	let old_isdeleted=oldrecord.get("is_deleted");
+	let new_isdeleted=record.get("is_deleted");
+	let old_isrepeating=oldrecord.get("isrepeating");
+	let new_isrepeating=record.get("isrepeating");
+	let old_email_notification=oldrecord.get("email_notification");
+	let new_email_notification=record.get("email_notification");
+	console.log(`0:${old_isdeleted}  n:${new_isdeleted}`)
+	if(old_isdeleted != new_isdeleted){
+		 $app.dao().db().newQuery("UPDATE alert set active={:newvalue} WHERE reminder = {:id}").bind({ "newvalue": !new_isdeleted ,"id":id }).execute();
+		console.log("After update");
+	}	
+	else if(old_isrepeating != new_isrepeating){
+		let duedate=oldrecord.get("duedate");
+                 $app.dao().db().newQuery("UPDATE alert set active={:newvalue} WHERE reminder = {:id} AND triggdate = {:date}").bind({ "newvalue": !new_isdeleted ,"id":id ,"date":duedate}).execute();
+                console.log("After update");
+        }
+	else if(old_email_notificationold_email_notificationold_email_notification)
+	console.log(`is_deleted ${data["is_deleted"]}`)
+	console.log(`is_email ${data["email_notification"]}`)
+	console.log(`isrepeating ${data["isrepeating"]}`)
+	//console.log(e.httpContext.)
+	console.log(e.record.get("isrepeating"));
+
+},"reminder")
