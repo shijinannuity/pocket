@@ -315,7 +315,7 @@ routerAdd("POST", "/mailMFA", (c) => {
 </body>
 `
 	})
-	$app.newMailClient().send(message)
+	//$app.newMailClient().send(message)
 	let time = new DateTime()
 	let collection = $app.dao().findCollectionByNameOrId("mailtwofactor")
 
@@ -331,13 +331,24 @@ routerAdd("POST", "/mailMFA", (c) => {
 
 routerAdd("POST", "/mailverification", (c) => {
 	let data = $apis.requestInfo(c).data
+	let t1=new DateTime();
+        let t=t1.time().utc()
+        let u1=new DateTime(data.id)
+        let u=u1.time()
+        let d=t.sub(u)
+        let min=d.minutes()
+	if(min>1){
+		 return c.json(200, {"verification": false,"message":"Timeout!!!.OTP expired"})
+
+	}
 	const record = $app.dao().findFirstRecordByData(
 		"mailtwofactor", "time", data.id)
+	
 	if (record.get("otp") == data.otp.toString()) {
 		return c.json(200, { "verification": true })
 	}
 	return c.json(200, {
-		"verification": false,
+		"verification": false,"message":"Invalid OTP"
 	})
 
 

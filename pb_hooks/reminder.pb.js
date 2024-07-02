@@ -10,6 +10,7 @@ onRecordAfterCreateRequest((e) => {
 	}
 	let id = e.record.getId()
 	let email=e.record.get("email_notification")
+	console.log(`emailnot:: ${email}`)
 	let repeat_freq=e.record.get("repeatfreq")
 	let id_copy = id
 	console.log("\nReminder hook\n-------\n");
@@ -94,8 +95,11 @@ onRecordAfterCreateRequest((e) => {
 					console.log("s_time inside loop:" + s_time)
 
 					let collection = $app.dao().findCollectionByNameOrId("alert");
+				//	console.log("before add")
 					const record = new Record(collection, { "reminder": id,"owner":data["owner_user_id"],"secondary_user":data["secondary_user_id"], "type": type, "title": data["title"],"description": data["description"], "app": data["app"], "triggdate": s_time,"triggtime":duetime,"active":true,"email":email});
+					
 					$app.dao().saveRecord(record);
+				//	 console.log("after add")
 					s_time = s_time.addDate(0, 0, 1+repeat_freq);
 				}
 			}

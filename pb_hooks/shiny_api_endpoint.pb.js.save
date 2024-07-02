@@ -1,0 +1,24 @@
+routerAdd("POST","/sendmessage",(c)=>{
+	let info=$apis.requestInfo(c)
+	let data=info.data
+	console.log(`message from R  ::: ${data.message}`)
+	//let req=c.request()
+	let collection=$app.dao().findCollectionByNameOrId("r_data")
+	console.log(`isfile::: ${data.isfile}`)
+	if(data.isfile){
+		console.log(`inside isfile::: ${data.isfile}`)
+		let message=data.message
+		
+		//req.ParseMultipartForm()
+		//console.log(`sdfdsfs::${req.multipartForm}`)
+		const doc = c.formFile("fileconst doc = c.formFile("document")")
+		let rec=new Record(collection,{"message":data.message,"file":c.formFile("file")})
+		$app.dao().saveRecord(rec)
+		c.noContent(204)
+	}
+	else{
+	let rec=new Record(collection,{"message":data.message,})
+	$app.dao().saveRecord(rec)
+	c.noContent(204)
+	}
+})

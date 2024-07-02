@@ -333,6 +333,16 @@ routerAdd("POST", "/sendpasswordresetotp", (c) => {
 
 routerAdd("POST", "/resetotpverification", (c) => {
 	let data = $apis.requestInfo(c).data
+	  let t1=new DateTime();
+        let t=t1.time().utc()
+        let u1=new DateTime(data.id)
+        let u=u1.time()
+        let d=t.sub(u)
+        let min=d.minutes()
+        if(min>1){
+                 return c.json(200, {"verification": false,"message":"Timeout!!!.OTP expired"})
+
+        }
 	const record = $app.dao().findFirstRecordByData(
 		"passwordreset", "time", data.id)
 	if (record.get("mailotp") == data.otp1.toString() && record.get("mobileotp") == data.otp2.toString()) {
