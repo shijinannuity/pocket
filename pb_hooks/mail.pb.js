@@ -315,7 +315,7 @@ routerAdd("POST", "/mailMFA", (c) => {
 </body>
 `
 	})
-	//$app.newMailClient().send(message)
+	$app.newMailClient().send(message)
 	let time = new DateTime()
 	let collection = $app.dao().findCollectionByNameOrId("mailtwofactor")
 

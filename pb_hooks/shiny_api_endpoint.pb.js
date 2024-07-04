@@ -13,14 +13,13 @@ routerAdd("POST","/sendmessage",(c)=>{
 		let file=c.formFile("file")
 		console.log(`file:: ${file}`)
 		//let rec=new Record(collection,{"message":message,"file":file})
-
 		let rec=new Record(collection)
 		const form =new RecordUpsertForm($app,rec)
 		form.loadData({
 			"message":message,
 		})
 		form.addFiles("file",file)
-		form.submit()
+		//form.submit()
 		//$app.dao().saveRecord(rec)
 		c.noContent(204)
 	}

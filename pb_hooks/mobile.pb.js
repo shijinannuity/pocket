@@ -1,13 +1,55 @@
 
-routerAdd("GET","/mobile",(c)=>{
-let mobile=c.queryParam("mobile")
+routerAdd("POST","/mobileotp",(c)=>{
+
+	let data = $apis.requestInfo(c).data
+	let email = data.mobile
 let otp=$security.randomStringWithAlphabet(6, "123456789")
 // pass mobile number and this otp to A2P provider
 //if request is success
-return c.json(200,{"otp":otp})
-
+let time = new DateTime()
+let collection = $app.dao().findCollectionByNameOrId("mobile_otp")
+const record = new Record(collection, { "otp": otp, "time": time.toString() })
+$app.dao().saveRecord(record)
+return c.json(200, { "id": time.toString() })
 });
 
+
+routerAdd("POST", "/mobileverification", (c) => {
+        let info = $apis.requestInfo(c)
+	let data=info.data
+	let authrecord=info.authrecord;
+        let t1=new DateTime();
+        let t=t1.time().utc()
+        let u1=new DateTime(data.id)
+        let u=u1.time()
+        let d=t.sub(u)
+        let min=d.minutes()
+        if(min>1){
+                 return c.json(200, {"verification": false,"message":"Timeout!!!.OTP expired"})
+
+        } 
+        const record = $app.dao().findFirstRecordByData("mobile_otp", "time", data.id)
+        console.log(`rec otp::${record.get("otp")}`)
+	console.log(`data otp :: ${data.otp.toString()}`)
+	console.log(`mobile::${data.mobile}`)
+	if (record.get("otp") == data.otp.toString()) {
+		//let collection=$app.dao().findCollectionByNameOrId("users");
+		let rec=$app.dao().findFirstRecordByData("users","phone_number",data.mobile)
+		//console.log(`mobile fromrec::${rec.get("phone_number")}`)
+		rec.set("mobile_verified","true")
+		$app.dao().saveRecord(rec)
+
+		//authrecord.set("mobile_verified",true);
+		//$app.dao().saveRecord(authrecord)
+                return c.json(200, { "verification": true })
+        }
+        return c.json(200, {
+                "verification": false,"message":"Invalid OTP"
+        })
+
+
+
+});
 
 
 
