@@ -1,0 +1,16 @@
+{{define "title"}}
+    Notification
+{{end}}
+
+{{define "body"}}
+    	You have a {{.type}}.
+{{end}}
+{{define "content"}}
+<p align='left'>Title:{{.title}}<br>
+        Description:{{.description}}<br>
+        App name:{{.app}}<br>
+	Date:{{.date}}<br>
+	Time:{{.time}}<br></p>
+{{end}}
+{{define "foot"}}
+{{end}}

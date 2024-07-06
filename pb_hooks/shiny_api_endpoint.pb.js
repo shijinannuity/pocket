@@ -1,8 +1,9 @@
 routerAdd("POST","/sendmessage",(c)=>{
-	//let info=$apis.requestInfo(c)
-	//let data=info.data
+	let info=$apis.requestInfo(c)
+	let data=info.data
 //	console.log(`message from R  ::: ${data.message}`)
 	//let req=c.request()
+	console.log(data)
 	let collection=$app.dao().findCollectionByNameOrId("r_data")
 //	console.log(`isfile::: ${data.isfile}`)
 	let message=c.formValue("message")
@@ -24,7 +25,7 @@ routerAdd("POST","/sendmessage",(c)=>{
 		c.noContent(204)
 	}
 	else{
-	let rec=new Record(collection,{"message":message,})
+	let rec=new Record(collection,{"message":message,"data":data})
 	$app.dao().saveRecord(rec)
 	c.noContent(204)
 	}
