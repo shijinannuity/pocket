@@ -35,6 +35,15 @@ routerAdd("POST","/changeadminpassword",(c)=>{
 
 })
 
+routerAdd("POST","/checkadmin",(c)=>{
+	let info = $apis.requestInfo(c);
+        let data=info.data;
+	$app.dao().findAdminByEmail(data.email)
+	return c.noContent(204)
+
+
+})
+
 
 routerAdd("POST","/resetadminpassword",(c)=>{
 	let info = $apis.requestInfo(c);

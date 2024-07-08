@@ -19,3 +19,43 @@ routerAdd("DELETE","/wf_clear_app/:id",(c)=>{
 	}
 
 })
+
+
+routerAdd("PUT","/modifyworkflow",(c)=>{
+	
+        let data=$apis.requestInfo(c).data
+        //let collection=$app.dao().findCollectionByNameOrId("try")
+	let wf_id=data.wf_id
+	let name=data.name
+        let apps=data.apps
+        var values=""
+        console.log(`Type  ::  ${typeof apps}`)
+	if(apps.length>0){
+		let url=`http://localhost:8092/wf_clear_app/${wf_id}`
+		let res=$http.send({
+			url:url,
+			method:"delete",
+		})
+        	apps.forEach(a);
+        	console.log(`Apps :: ${apps} values::${values}`)
+        	let newquery=`INSERT INTO workflow_app(wf_id,app,app_order) VALUES${values}`
+        	 console.log(`Newquery ::: ${newquery}`)
+        	$app.dao().db().newQuery(newquery).execute()
+	}
+        $app.dao().db().newQuery("UPDATE workflow SET wfname={:name} WHERE id={:id}").bind({"name":name,"id":wf_id}).execute()
+        return c.json(200,{"message":"Success"})
+        /*}catch(e){
+                console.log(`Error in addsample::: ${e}`)
+                return c.json(400,{"message":e})
+        }*/
+        function a(v,i) {
+                if(values==""){
+                values+=`('${wf_id}','${v}',${i+1})`;
+                }
+                else{
+                        values+=`,('${wf_id}','${v}',${i+1})`;
+                }
+        }
+
+	
+})

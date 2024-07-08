@@ -8,6 +8,7 @@ routerAdd("POST","/sendmessage",(c)=>{
 //	console.log(`isfile::: ${data.isfile}`)
 	let message=c.formValue("message")
 	if(c.formValue("isfile")){
+		try{
 		console.log(`inside isfile::: `)
 		//req.ParseMultipartForm()
 		//console.log(`sdfdsfs::${req.multipartForm}`)
@@ -18,11 +19,16 @@ routerAdd("POST","/sendmessage",(c)=>{
 		const form =new RecordUpsertForm($app,rec)
 		form.loadData({
 			"message":message,
+			"data":data
 		})
-		form.addFiles("file",file)
-		//form.submit()
+		let f=$filesystem.fileFromMultipart(c.formFile("file"))
+		form.addFiles("file",f)
+		form.submit()
 		//$app.dao().saveRecord(rec)
 		c.noContent(204)
+		}catch(e){
+			console.log("Sendmessage::: Error :: ${e}")
+		}
 	}
 	else{
 	let rec=new Record(collection,{"message":message,"data":data})
