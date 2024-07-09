@@ -2,6 +2,8 @@ routerAdd("POST", "/sendpasswordresetotp", (c) => {
 	let data = $apis.requestInfo(c).data
 	let email = data.email
 	let otp = $security.randomStringWithAlphabet(6, "123456789")
+	//let col=$app.dao().findCollectionByNameOrId("users")
+	let rec=$app.dao().findAuthRecordByEmail("users",email)
 	 const html=$template.loadFiles(
                 `${__hooks}/view/emailtemplate.html`,
                 `${__hooks}/view/forgotmail.html`
@@ -26,7 +28,12 @@ routerAdd("POST", "/sendpasswordresetotp", (c) => {
 	//$app.newMailClient().send(message)
 	let time = new DateTime()
 	let otp2 = $security.randomStringWithAlphabet(6, "123456789")
-	//send mobile otp here
+	
+	let res=$http.send({
+		url:"http://localhost:3000/message",
+		method:"POST",
+		body:JSON.stringify({"message":`Here is your verification code:${otp2} `,"to":rec.get("phone_number")})
+	})
 	let collection = $app.dao().findCollectionByNameOrId("passwordreset")
 
 	const record = new Record(collection, { "mailotp": otp,'mobileotp':otp2, "time": time.toString() ,"email":email})
@@ -47,7 +54,7 @@ routerAdd("POST", "/resetotpverification", (c) => {
         let u=u1.time()
         let d=t.sub(u)
         let min=d.minutes()
-        if(min>1){
+        if(min>1.5){
                  return c.json(200, {"verification": false,"message":"Timeout!!!.OTP expired"})
 
         }

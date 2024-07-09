@@ -28,7 +28,6 @@ routerAdd("POST","/changeadminpassword",(c)=>{
 	let record=info.admin;
 	//console.log("email:"+record.get("email"))
 	//console.log("current:"+data.currentpassword)
-	
 	record.setPassword(data.newpassword);
 	$app.dao().saveAdmin(record);
 	return c.json("200",{"message":"Password reset successfull.Please login again"});

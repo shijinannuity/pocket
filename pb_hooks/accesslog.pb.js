@@ -1,4 +1,4 @@
-onRecordAuthRequest((e)=>{
+onRecordAfterAuthWithPasswordRequest((e)=>{
 	let useragent=e.httpContext.request().userAgent();
 
 	console.log(e.record.get("user_id")+"            login      "+DateTime().toString()+"    "+e.httpContext.realIP()+"        "+e.httpContext.request().userAgent() )

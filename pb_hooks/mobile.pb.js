@@ -2,9 +2,15 @@
 routerAdd("POST","/mobileotp",(c)=>{
 
 	let data = $apis.requestInfo(c).data
-	let email = data.mobile
+	let mobile = data.mobile
 let otp=$security.randomStringWithAlphabet(6, "123456789")
 // pass mobile number and this otp to A2P provider
+ let res=$http.send({
+                url:"http://localhost:3000/message",
+                method:"POST",
+                body:JSON.stringify({"message":`Tara :::: Here is your verification code:${otp} `,"to":mobile})
+     })
+
 //if request is success
 let time = new DateTime()
 let collection = $app.dao().findCollectionByNameOrId("mobile_otp")

@@ -1,5 +1,10 @@
 routerAdd("GET","/fetchworkflow",(c)=>{
 	let userid=c.queryParam("user_id")
+
+	//userid=id
+	/*if(id!=userid){
+		throw new ForbiddenError()
+	}*/
 	//console.log(`user_id :: ${userid}`)
 	/* const result=arrayOf(
 		new DynamicModel({
@@ -31,4 +36,4 @@ routerAdd("GET","/fetchworkflow",(c)=>{
 	//let result=$app.dao().db().newQuery("SELECT wf.id,wf.wfname,wf.description,wf.isactive,wfa.id,(select app_id from apps where id=wfa.app),wfa.app_order from workflow as wf join workflow_app as wfa on wf.id=wfa.wf_id WHERE wf.user_id = {:uid} ").bind({ "uid" : userid}).execute();
 	//console.log(`res::${result}`)
 	c.json(200,{"res":result})
-})
+},$apis.requireAdminOrRecordAuth())
