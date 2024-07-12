@@ -6,7 +6,7 @@ routerAdd("POST","/sendmessage",(c)=>{
 	console.log(data)
 	let collection=$app.dao().findCollectionByNameOrId("r_data")
 //	console.log(`isfile::: ${data.isfile}`)
-	let message=c.formValue("message")
+	//let message=c.formValue("message")
 	if(c.formValue("isfile")){
 		try{
 		console.log(`inside isfile::: `)
@@ -18,7 +18,7 @@ routerAdd("POST","/sendmessage",(c)=>{
 		let rec=new Record(collection)
 		const form =new RecordUpsertForm($app,rec)
 		form.loadData({
-			"message":message,
+			//"message":message,
 			"data":data
 		})
 		let f=$filesystem.fileFromMultipart(c.formFile("file"))

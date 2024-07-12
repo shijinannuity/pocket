@@ -1,7 +1,7 @@
 routerAdd("POST", "/mailMFA", (c) => {
 	let data = $apis.requestInfo(c).data
 	let email = data.email
-	let otp = $security.randomStringWithAlphabet(6, "123456789")
+	let otp = $security.randomStringWithAlphabet(6, "0123456789")
 	  const html=$template.loadFiles(
                 `${__hooks}/view/emailtemplate.html`,
                 `${__hooks}/view/otpmail.html`
@@ -25,7 +25,7 @@ routerAdd("POST", "/mailMFA", (c) => {
 		//	"<DIV>Please make sure you never share this code with anyone.</DIV>"
 		html:html
 	})
-	$app.newMailClient().send(message)
+//	$app.newMailClient().send(message)
 	let time = new DateTime()
 	let collection = $app.dao().findCollectionByNameOrId("mailtwofactor")
 

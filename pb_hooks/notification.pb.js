@@ -13,12 +13,12 @@ cronAdd("checking alert", "*/10 * * * *", () => {
 	}))
 	console.log("hello from cron:: checking alert")
 	$app.dao().db().newQuery("SELECT al.type,al.title,al.description,al.app,al.wfname,al.triggdate,al.triggtime,(SELECT email FROM users where users.id=al.owner) as owner,COALESCE((SELECT users.email FROM users where users.id=al.secondary_user),'') as secondary FROM alert as al WHERE al.active=true AND al.email=true AND (SELECT email_notification FROM users where users.id=al.owner)=true AND (strftime('%Y-%m-%d', al.triggdate,'localtime')=strftime('%Y-%m-%d', 'now','localtime')) AND (strftime('%H:%M', al.triggdate,'localtime') <= strftime('%H:%M', 'now','localtime','+10 minutes')) AND (strftime('%H:%M', al.triggdate,'localtime') >= strftime('%H:%M', 'now','localtime'))").all(result)
-	console.log("checking alert :: before while")
+	//console.log("checking alert :: before while")
 	let l=result.length
 	let i=0
 	while(i<l){
-		console.log(`Inside while`)
-		console.log(`a::${result[i]["title"]}  ${result[i].owner}`)
+		//console.log(`Inside while`)
+		//console.log(`a::${result[i]["title"]}  ${result[i].owner}`)
 		let html=$template.loadFiles(
 		`${__hooks}/view/emailtemplate.html`,
 		`${__hooks}/view/notify.html`
@@ -37,9 +37,9 @@ cronAdd("checking alert", "*/10 * * * *", () => {
 		//$app.newMailClient().send(mail)
 		i+=1
 	}
-	console.log("checking alert :: after while")
+	//console.log("checking alert :: after while")
 	}catch(err){
-	  console.log(`Error inside cron alert::${err}`)
+	  //console.log(`Error inside cron alert::${err}`)
 	}
 
 })
