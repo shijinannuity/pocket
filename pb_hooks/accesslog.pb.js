@@ -22,6 +22,7 @@ onRecordAfterAuthWithPasswordRequest((e)=>{
 
 },"users")
 
+/***
 onRecordAfterCreateRequest((e)=>{
 	let record=e.record
 	//let ip=record.get("ipaddr")
@@ -40,7 +41,29 @@ onRecordAfterCreateRequest((e)=>{
 	$app.dao().saveRecord(record)
 
 },"access")
+*/
 
+
+
+
+
+/**
+	Endpoint: logout
+	Method: POST
+	Description: To add user info in access table when user logout
+	Parameters:
+		body:
+			user_id:String
+	response:
+		Success:
+			StatusCode:204
+		Error:
+			StatusCode:404
+			message:'No resource found'
+
+
+
+*/
 routerAdd("POST","/logoutlog",(c)=>{
 	let  useragent=c.request().userAgent();
 	let data = $apis.requestInfo(c).data
@@ -54,6 +77,25 @@ routerAdd("POST","/logoutlog",(c)=>{
 
 
 })
+
+
+/**
+        Endpoint: appaccesslog
+        Method: POST
+        Description: To add user info in access table when user open any shiny app
+        Parameters:
+                body:
+                        user_id:String
+        response:
+                Success:
+                        StatusCode:204
+                Error:
+                        StatusCode:404
+                        message:'No resource found'
+
+
+
+*/
 
 routerAdd("POST","/appaccesslog",(c)=>{
         let  useragent=c.request().userAgent();
