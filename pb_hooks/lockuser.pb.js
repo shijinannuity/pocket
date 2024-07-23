@@ -2,11 +2,19 @@ onRecordBeforeAuthWithPasswordRequest((e)=>{
 	let c=e.httpContext
     let email=e.identity
     console.log(e.password)
-	let record=$app.dao().findAuthRecordByEmail("users",email);
+	let record=""
+	try{
+		record=$app.dao().findAuthRecordByEmail("users",email);
+	}catch(e){
+		return c.json("404",{"message":"Email not exist!!!"});
+	}
 	let datetime=new DateTime()
         let validate=record.validatePassword(e.password);
 	let locktime=record.get('locktime')
 	let t=datetime.time().utc()
+	if(!validate){
+		return c.json("400",{"message":"Invalid Password!!!"});
+	}
         /*	if(!validate){
 		console.log(`locktime:::${locktime}`)
 		let message=""

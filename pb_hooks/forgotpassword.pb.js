@@ -3,8 +3,13 @@ routerAdd("POST", "/sendpasswordresetotp", (c) => {
 	let email = data.email
 	let otp = $security.randomStringWithAlphabet(6, "123456789")
 	//let col=$app.dao().findCollectionByNameOrId("users")
-	let rec=$app.dao().findAuthRecordByEmail("users",email)
-	 const html=$template.loadFiles(
+	let rec=""
+	try{
+		rec=$app.dao().findAuthRecordByEmail("users",email)
+	 }catch(e){
+		return c.json(400,{"message":"Email not exist   !!!"})
+	}
+	const html=$template.loadFiles(
                 `${__hooks}/view/emailtemplate.html`,
                 `${__hooks}/view/forgotmail.html`
         ).render({
