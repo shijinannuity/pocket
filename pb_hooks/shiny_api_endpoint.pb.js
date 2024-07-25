@@ -15,6 +15,8 @@ routerAdd("POST","/sendmessage",(c)=>{
 		let file=c.formFile("file")
 		console.log(`file:: ${file}`)
 		//let rec=new Record(collection,{"message":message,"file":file})
+		//let filter=`message='fe'`
+		//let rec=$app.dao().findFirstRecordByFilter("r_data",filter)
 		let rec=new Record(collection)
 		const form =new RecordUpsertForm($app,rec)
 		form.loadData({
@@ -24,10 +26,12 @@ routerAdd("POST","/sendmessage",(c)=>{
 		let f=$filesystem.fileFromMultipart(c.formFile("file"))
 		form.addFiles("file",f)
 		form.submit()
+		//let query=`INSERT INTO r_data(data,file) values('${data}','${f}')`
+		//$app.dao().db().newQuery(query).execute()
 		//$app.dao().saveRecord(rec)
 		c.noContent(204)
 		}catch(e){
-			console.log("Sendmessage::: Error :: ${e}")
+			console.log(`Sendmessage::: Error :: ${e}`)
 		}
 	}
 	else{
