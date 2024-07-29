@@ -29,10 +29,11 @@ routerAdd("PUT", "/report", (c) => {
 		let rec = new Record(collection)
 		const form = new RecordUpsertForm($app, rec)
 		let f = $filesystem.fileFromMultipart(c.formFile("file"))
+		let password=$security.randomStringWithAlphabet(6,"0123456789")
 		form.loadData({
 			"email": data.email,
 			"filename": f.originalName,
-			"password": data.password,
+			"password": password,
 			"description": data.description
 		})
 		form.addFiles("file", f)
@@ -42,7 +43,7 @@ routerAdd("PUT", "/report", (c) => {
 			`${__hooks}/view/filepassword.html`
 		).render({
 			"filename": f.originalName,
-			"password": data.password
+			"password": password
 		})
 		const message = new MailerMessage({
 			from: {

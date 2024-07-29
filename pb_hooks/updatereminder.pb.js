@@ -25,6 +25,10 @@ onRecordBeforeUpdateRequest((e) => {
 		$app.dao().saveRecord(al_rec)
 	}
 	else {
+		// let old_repeat_interval=oldrecord.get("repeat_interval")
+		// let old_duetime=oldrecord.get("duedate");
+		// let old_terminatedate=
+		// if()
 		if (old_isdeleted != new_isdeleted) {
 			if (new_isdeleted == false && old_isrepeating == false) {
 				console.log(`new_isdeleted == false && old_isrepeating==false  date::${duedate}`)

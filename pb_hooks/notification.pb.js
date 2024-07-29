@@ -34,7 +34,7 @@ cronAdd("checking alert", "*/10 * * * *", () => {
 				html: html
 
 			})
-			//$app.newMailClient().send(mail)
+			$app.newMailClient().send(mail)
 			i += 1
 		}
 		//console.log("checking alert :: after while")

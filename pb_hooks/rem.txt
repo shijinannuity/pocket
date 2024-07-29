@@ -1,0 +1,5 @@
+let old_repeat_interval=oldrecord.get("repeat_interval")
+let old_duetime=oldrecord.get("duedate")
+let old_terminatedate=oldrecord.get("terminatedate)
+let old_repeat_freq=oldrecord.get("repeat_freq")
+let old_
