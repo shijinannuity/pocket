@@ -28,7 +28,7 @@ onRecordAfterCreateRequest((e) => {
 		duedate = duedate.substring(0, 10)
 		console.log(`d inside if:::${duedate}`)
 	}
-	let datearr = duedate.split("-");
+	//let datearr = duedate.split("-");
 	let duetime = data["duetime"];
 
 	console.log("Id:", id)
@@ -140,7 +140,7 @@ onRecordAfterCreateRequest((e) => {
 							let collection = $app.dao().findCollectionByNameOrId("alert");
 							const record = new Record(collection, { "reminder": id, "owner": owner, "secondary_user": secondary_user, "type": type, "title": title, "description": description, "app": app, "triggdate": s_time, "triggtime": duetime, "active": true, "email": email, "wfname": wf });
 							$app.dao().saveRecord(record);
-							if (dayslist.indexOf(Number(s_time_weekday)) == (daylist.length - 1)) {
+							if (dayslist.indexOf(Number(s_time_weekday)) == (dayslist.length - 1)) {
 								s_time = s_time.addDate(0, 0, 7 * repeat_freq);
 							}
 						}

@@ -3,8 +3,8 @@ onRecordAfterAuthWithPasswordRequest((e) => {
 	console.log(e.record.get("user_id") + "            login      " + DateTime().toString() + "    " + e.httpContext.realIP() + "        " + e.httpContext.request().userAgent())
 	if (useragent != "node" && useragent != "Dart/3.3 (dart:io)") {
 		let collection = $app.dao().findCollectionByNameOrId("access");
-		//let ip=e.httpContext.realIP()
-		let ip = "122.164.8.43"
+		let ip=e.httpContext.realIP()
+		//let ip = "122.164.8.43"
 		let url = `https://ipinfo.io/${ip}?token=53e6f88338659f`
 		const res = $http.send({ url: url, method: "get" })
 		let geolocation = {}

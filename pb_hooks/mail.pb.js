@@ -25,7 +25,7 @@ routerAdd("POST", "/mailMFA", (c) => {
 		//	"<DIV>Please make sure you never share this code with anyone.</DIV>"
 		html: html
 	})
-	//	$app.newMailClient().send(message)
+	$app.newMailClient().send(message)
 	let time = new DateTime()
 	let collection = $app.dao().findCollectionByNameOrId("mailtwofactor")
 

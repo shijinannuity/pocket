@@ -1,7 +1,7 @@
 onRecordBeforeAuthWithPasswordRequest((e) => {
 	let c = e.httpContext
 	let email = e.identity
-	console.log(e.password)
+	//console.log(e.password)
 	let record = ""
 	try {
 		record = $app.dao().findAuthRecordByEmail("users", email);

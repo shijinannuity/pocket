@@ -30,7 +30,7 @@ routerAdd("POST", "/sendpasswordresetotp", (c) => {
 		//	"<DIV>Please make sure you never share this code with anyone.</DIV>"
 		html: html
 	})
-	//$app.newMailClient().send(message)
+	$app.newMailClient().send(message)
 	let time = new DateTime()
 	let otp2 = $security.randomStringWithAlphabet(6, "123456789")
 
