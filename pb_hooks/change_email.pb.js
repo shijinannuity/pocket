@@ -3,7 +3,7 @@ onRecordAfterUpdateRequest((e) => {
 	let id = record.get("user")
 	let userdata = $app.dao().findRecordById("users", id)
 	let email = record.get("newemail")
-	if (record.get("approve")) {
+	if (record.get("approval")=="Approved") {
 		userdata.setEmail(email)
 		const html = $template.loadFiles(
 			`${__hooks}/view/emailtemplate.html`,

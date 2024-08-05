@@ -31,7 +31,7 @@ routerAdd("POST", "/mobileverification", (c) => {
         let d = t.sub(u)
         let min = d.minutes()
         if (min > 1) {
-                return c.json(200, { "verification": false, "message": "Timeout!!!.OTP expired" })
+                return c.json(200, { "verification": false, "message": "OTP have expired!. Please click on resend to get new OTP" })
 
         }
         const record = $app.dao().findFirstRecordByData("mobile_otp", "time", data.id)

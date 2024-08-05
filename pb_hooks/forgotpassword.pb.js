@@ -60,7 +60,7 @@ routerAdd("POST", "/resetotpverification", (c) => {
 	let d = t.sub(u)
 	let min = d.minutes()
 	if (min > 1.5) {
-		return c.json(200, { "verification": false, "message": "Timeout!!!.OTP expired" })
+		return c.json(200, { "verification": false, "message": "OTP have expired!. Please click on resend to get new OTPs" })
 
 	}
 	const record = $app.dao().findFirstRecordByData(
