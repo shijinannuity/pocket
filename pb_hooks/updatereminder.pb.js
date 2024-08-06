@@ -67,7 +67,7 @@ onRecordBeforeUpdateRequest((e) => {
 		// console.log(`typr rep_day :: ${typeof old_repeatday}  ${typeof repeatday}`)
 		// console.log(`typr rep_day[0] :: ${typeof old_repeatday[0]}  ${typeof repeatday[0]}`)
 		// console.log(`len rep_day :: ${old_repeatday.length}  ${repeatday.length}`)
-		// //console.log(`typr rep_day[0] :: ${typeof old_repeatday[0]}  ${typeof repeatday[0]}`)
+		// console.log(`typr rep_day[0] :: ${typeof old_repeatday[0]}  ${typeof repeatday[0]}`)
 		let areEqual = old_repeatday.length === repeatday.length &&
                old_repeatday.every((value, index) => value === repeatday[index]);
 		// console.log(`condition oldrepeatday :: ${areEqual}`)
@@ -188,7 +188,8 @@ onRecordBeforeUpdateRequest((e) => {
 				$app.dao().saveRecord(record)
 			}
 		}
-		else if (old_app != app || old_description != description || old_secondary != secondary_user || old_title != title || old_wf != wf) {
+		else
+		 if (old_app != app || old_description != description || old_secondary != secondary_user || old_title != title || old_wf != wf) {
 			let now = new DateTime()
 			let query = `UPDATE alert SET secondary_user='${secondary_user}',title='${title}',description='${description}',app='${app}',wfname='${wf}',updated='${now}' WHERE reminder='${id}'`
 			$app.dao().db().newQuery(query).execute()
