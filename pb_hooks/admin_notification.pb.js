@@ -31,6 +31,7 @@ routerAdd("GET", "/adminnotification", (c) => {
 
 	}))*/
 	//let records=$app.dao().findRecordByViewFile("notloggedfor20",'name,company','')
+	//SELECT (ROW_NUMBER() OVER()) as id,u.name,u.user_id,(SELECT c.company_name from company as c WHERE c.id=u.company_id) as company from users as u where u.user_id NOT IN (SELECT DISTINCT access.user from access WHERE access.event='login' AND STRFTIME('%Y-%m-%d',access.date_time)>=STRFTIME('%Y-%m-%d','now','-20 days'))
 	let res = $http.send({ url: "http://localhost:8092/api/collections/users_not_loggedfor20/records", method: "get" })
 	let rec = res.json
 	console.log(`rescode: ${res.statusCode}`)
@@ -45,6 +46,25 @@ routerAdd("GET", "/adminnotification", (c) => {
 		}
 		notification.push({ "title": "There are some users that not logged in from last 20 days", "description": description })
 	}
+
+	/*WITH company_users AS (
+		SELECT company.company_name, json_group_array(users.name) AS user_names
+		FROM users
+		JOIN company ON users.company_id = company.id
+		GROUP BY company.company_name
+	),
+	not_logged_users AS (
+		SELECT t1.company, json_group_array(t1.name) AS not_logged_names
+		FROM users_not_loggedfor20 AS t1
+		GROUP BY t1.company
+	)
+	SELECT 
+		(ROW_NUMBER() OVER ()) as id,
+		t1.company
+	FROM not_logged_users AS t1
+	JOIN company_users AS t2 ON t1.company = t2.company_name
+	WHERE t1.not_logged_names = t2.user_names
+	GROUP BY t1.company*/
 	let res2 = $http.send({ url: "http://localhost:8092/api/collections/company_not_loggedfor20/records", method: "get" })
 	let rec2 = res2.json
 	console.log(`rescode: ${res2.statusCode}`)

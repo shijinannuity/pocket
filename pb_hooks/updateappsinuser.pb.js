@@ -40,6 +40,7 @@ onRecordBeforeUpdateRequest((e)=>{
         })
 
         if(removedapps.length>0){
+            console.log(`removed apps:: ${removedapps}`)
             const result = arrayOf(
                 new DynamicModel({
                     wf_row_id: "",
@@ -64,10 +65,34 @@ onRecordBeforeUpdateRequest((e)=>{
                     }
                 })
             })
-            let query=`DELETE FROM workflow_app where workflow_app.id in (${removeWfapps})`
-            //$app.dao().db().newQuery(query).execute()
-
-            
+           
+            // recent
+            let user_id=record.get("user_id")
+            // SELECT ac.id from access as ac join apps as ap on ac.event=ap.app_id where  user='ar_shiji' AND ap.id in ('8dl1q2gymdbjmqj')
+            // SELECT ac.id from access as ac where user='ar_shiji' AND ac.event in (SELECT apps.app_id FROM apps WHERE apps.id in ('8dl1q2gymdbjmqj'))`
+            $app.dao().runInTransaction((txDao) => {
+                let query=`DELETE FROM workflow_app where workflow_app.id in (${removeWfapps})`
+                console.log(`query wf ::: ${query}`)
+                removedapps=removedapps.map((val)=>`'${val}'`)
+                console.log(`after removedapps ::: ${removedapps}`)
+                txDao.db().newQuery(query).execute()
+                console.log(`after query wf`)
+                query=`DELETE FROM access where user='${user_id}' AND event in (SELECT apps.app_id FROM apps WHERE apps.id in (${removedapps}))`
+                txDao.db().newQuery(query).execute()
+                query=`DELETE from alert  where owner='${id}' and app in (SELECT apps.name from apps where apps.id in (${removedapps}))`
+                txDao.db().newQuery(query).execute()
+                query=`DELETE from reminder where owner_user_id='${id}' and app in (SELECT apps.name from apps where apps.id in (${removedapps}))`
+                txDao.db().newQuery(query).execute()
+            })
+            /*query=`DELETE FROM access where user='${user_id}' AND ac.event in (SELECT apps.app_id FROM apps WHERE apps.id in (${removedapps}))`
+            $app.dao().db().newQuery(query).execute()
+            query=`DELETE from alert  where owner='${id}' and app in (SELECT apps.name from apps where apps.id in (${removedapps}))`
+            $app.dao().db().newQuery(query).execute()
+            query=`DELETE from reminder where owner_user_id='${id}' and a.app in (SELECT apps.name from apps where apps.id in (${removedapps}))`
+            $app.dao().db().newQuery(query).execute()*/
+            //  SELECT a.id,a.app from reminder as a where a.owner_user_id='7nzws8mbrzpxpsl' and a.app in (SELECT apps.name from apps where apps.id in ('8dl1q2gymdbjmqj'))
+            // SELECT a.id,a.app from alert as a where a.owner='7nzws8mbrzpxpsl' and a.app in (SELECT apps.name from apps where apps.id in ('8dl1q2gymdbjmqj'))
+             
 
 
             

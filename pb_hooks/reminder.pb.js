@@ -72,7 +72,7 @@ onRecordAfterCreateRequest((e) => {
 		console.log("duetime:" + duetime);
 		console.log("datearr:" + datearr);
 		console.log("duedate:" + duedate);
-		let exp = "";
+		// let exp = "";
 		if (data["isrepeating"] == false) {
 			let dtt = `${duedate} ${duetime}:00.000Z`
 			let startdate = new DateTime(dtt)
@@ -108,11 +108,12 @@ onRecordAfterCreateRequest((e) => {
 					const record = new Record(collection, { "reminder": id, "owner": owner, "secondary_user": secondary_user, "type": type, "title": title, "description": description, "app": app, "triggdate": s_time, "triggtime": duetime, "active": true, "email": email, "wfname": wf })
 					$app.dao().saveRecord(record);
 					//	 console.log("after add")
-					s_time = s_time.addDate(0, 0, 1 + repeat_freq);
+					s_time = s_time.addDate(0, 0,repeat_freq);
 				}
 			}
 			else if (data["repeat_interval"] == "Weekly") {
-				if (repeat_freq == 0) {
+				let dayslist = data["repeat_day"];
+				if (dayslist.length==0) {
 					while (s_time.before(e_time)) {
 						//console.log("Repeat_intervel:"+data["repeat_intervel"])
 						console.log("s_time inside loop:" + s_time)
@@ -120,12 +121,12 @@ onRecordAfterCreateRequest((e) => {
 						let collection = $app.dao().findCollectionByNameOrId("alert");
 						const record = new Record(collection, { "reminder": id, "owner": owner, "secondary_user": secondary_user, "type": type, "title": title, "description": description, "app": app, "triggdate": s_time, "triggtime": duetime, "active": true, "email": email, "wfname": wf });
 						$app.dao().saveRecord(record);
-						s_time = s_time.addDate(0, 0, 7);
+						s_time = s_time.addDate(0, 0, 7*repeat_freq);
 					}
 				}
 				else {
 
-					let dayslist = data["repeat_day"];
+					
 					console.log("DAylist" + dayslist)
 					while (s_time.before(e_time)) {
 						//console.log("Repeat_intervel:"+data["repeat_intervel"])
@@ -141,7 +142,7 @@ onRecordAfterCreateRequest((e) => {
 							const record = new Record(collection, { "reminder": id, "owner": owner, "secondary_user": secondary_user, "type": type, "title": title, "description": description, "app": app, "triggdate": s_time, "triggtime": duetime, "active": true, "email": email, "wfname": wf });
 							$app.dao().saveRecord(record);
 							if (dayslist.indexOf(Number(s_time_weekday)) == (dayslist.length - 1)) {
-								s_time = s_time.addDate(0, 0, 7 * repeat_freq);
+								s_time = s_time.addDate(0, 0, 7 * (repeat_freq-1));
 							}
 						}
 						s_time = s_time.addDate(0, 0, 1);
@@ -154,7 +155,7 @@ onRecordAfterCreateRequest((e) => {
 					let collection = $app.dao().findCollectionByNameOrId("alert");
 					const record = new Record(collection, { "reminder": id, "owner": owner, "secondary_user": secondary_user, "type": type, "title": title, "description": description, "app": app, "triggdate": s_time, "triggtime": duetime, "active": true, "email": email, "wfname": wf });
 					$app.dao().saveRecord(record);
-					s_time = s_time.addDate(0, 1 + repeat_freq, 0);
+					s_time = s_time.addDate(0, repeat_freq, 0);
 				}
 			}
 			else {
@@ -162,7 +163,7 @@ onRecordAfterCreateRequest((e) => {
 					let collection = $app.dao().findCollectionByNameOrId("alert");
 					const record = new Record(collection, { "reminder": id, "owner": owner, "secondary_user": secondary_user, "type": type, "title": title, "description": description, "app": app, "triggdate": s_time, "triggtime": duetime, "active": true, "email": email, "wfname": wf });
 					$app.dao().saveRecord(record);
-					s_time = s_time.addDate(1 + repeat_freq, 0, 0);
+					s_time = s_time.addDate(repeat_freq, 0, 0);
 				}
 
 

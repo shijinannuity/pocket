@@ -58,16 +58,16 @@ onRecordBeforeUpdateRequest((e) => {
 			duedate = duedate.substring(0, 10)
 			console.log(`d inside if:::${duedate}`)
 		}
-		// console.log(`date ${old_duedate} ${old_duetime}   new ${duedate} ${duetime}`)
-		// console.log(`repeat_interval :: ${old_repeat_interval} ${repeat_interval}`)
-		// console.log(`trminatedate:: ${old_terminatedate}  ${terminatedate}`)
-		// console.log(`old_duedate :: ${old_duedate}  ${duedate}`)
-		// console.log(`repfreq:: ${old_repeat_freq}  ${repeat_freq}`)
-		// console.log(`rep_day :: ${old_repeatday}  ${repeatday}`)
-		// console.log(`typr rep_day :: ${typeof old_repeatday}  ${typeof repeatday}`)
-		// console.log(`typr rep_day[0] :: ${typeof old_repeatday[0]}  ${typeof repeatday[0]}`)
-		// console.log(`len rep_day :: ${old_repeatday.length}  ${repeatday.length}`)
-		// console.log(`typr rep_day[0] :: ${typeof old_repeatday[0]}  ${typeof repeatday[0]}`)
+		console.log(`date ${old_duedate} ${old_duetime}   new ${duedate} ${duetime}`)
+		console.log(`repeat_interval :: ${old_repeat_interval} ${repeat_interval}`)
+		console.log(`trminatedate:: ${old_terminatedate}  ${terminatedate}`)
+		console.log(`old_duedate :: ${old_duedate}  ${duedate}`)
+		console.log(`repfreq:: ${old_repeat_freq}  ${repeat_freq}`)
+		console.log(`rep_day :: ${old_repeatday}  ${repeatday}`)
+		console.log(`typr rep_day :: ${typeof old_repeatday}  ${typeof repeatday}`)
+		console.log(`typr rep_day[0] :: ${typeof old_repeatday[0]}  ${typeof repeatday[0]}`)
+		console.log(`len rep_day :: ${old_repeatday.length}  ${repeatday.length}`)
+		console.log(`typr rep_day[0] :: ${typeof old_repeatday[0]}  ${typeof repeatday[0]}`)
 		let areEqual = old_repeatday.length === repeatday.length &&
                old_repeatday.every((value, index) => value === repeatday[index]);
 		// console.log(`condition oldrepeatday :: ${areEqual}`)
@@ -99,7 +99,7 @@ onRecordBeforeUpdateRequest((e) => {
 			let e_time = enddate.time();
 			e_time = e_time.addDate(0, 0, 1);
 			console.log("start:" + startdate)
-			//console.log("end:"+enddate)
+			console.log("end:"+enddate)
 			//console.log("Repeat_intervel:"+data["repeat_interval"])
 			console.log("s_time:" + s_time)
 			//console.log("e_time:"+e_time)
@@ -112,11 +112,12 @@ onRecordBeforeUpdateRequest((e) => {
 					const record = new Record(collection, { "reminder": id, "owner": owner, "secondary_user": secondary_user, "type": type, "title": title, "description": description, "app": app, "triggdate": s_time, "triggtime": duetime, "active": true, "email": email, "wfname": wf })
 					$app.dao().saveRecord(record);
 					//	 console.log("after add")
-					s_time = s_time.addDate(0, 0, 1 + repeat_freq);
+					s_time = s_time.addDate(0, 0, repeat_freq);
 				}
 			}
 			else if (repeat_interval == "Weekly") {
-				if (repeat_freq == 0) {
+				let dayslist = record.get("repeat_day")
+				if (dayslist.length==0) {
 					while (s_time.before(e_time)) {
 						//console.log("Repeat_intervel:"+data["repeat_intervel"])
 						console.log("s_time inside loop:" + s_time)
@@ -124,12 +125,11 @@ onRecordBeforeUpdateRequest((e) => {
 						let collection = $app.dao().findCollectionByNameOrId("alert");
 						const record = new Record(collection, { "reminder": id, "owner": owner, "secondary_user": secondary_user, "type": type, "title": title, "description": description, "app": app, "triggdate": s_time, "triggtime": duetime, "active": true, "email": email, "wfname": wf });
 						$app.dao().saveRecord(record);
-						s_time = s_time.addDate(0, 0, 7);
+						s_time = s_time.addDate(0, 0, 7*repeat_freq);
 					}
 				}
 				else {
-
-					let dayslist = record.get("repeat_day")
+					
 					// console.log(`type of daylist  ${typeof dayslist[0]}    ${dayslist[0]}`)
 					function strtonum(value, index) {
 						return Number(value);
@@ -153,7 +153,7 @@ onRecordBeforeUpdateRequest((e) => {
 							const record = new Record(collection, { "reminder": id, "owner": owner, "secondary_user": secondary_user, "type": type, "title": title, "description": description, "app": app, "triggdate": s_time, "triggtime": duetime, "active": true, "email": email, "wfname": wf });
 							$app.dao().saveRecord(record);
 							if (dayslist.indexOf(Number(s_time_weekday)) == (dayslist.length - 1)) {
-								s_time = s_time.addDate(0, 0, 7 * repeat_freq);
+								s_time = s_time.addDate(0, 0, 7 * (repeat_freq-1));
 							}
 
 
@@ -169,7 +169,7 @@ onRecordBeforeUpdateRequest((e) => {
 					let collection = $app.dao().findCollectionByNameOrId("alert");
 					const record = new Record(collection, { "reminder": id, "owner": owner, "secondary_user": secondary_user, "type": type, "title": title, "description": description, "app": app, "triggdate": s_time, "triggtime": duetime, "active": true, "email": email, "wfname": wf });
 					$app.dao().saveRecord(record);
-					s_time = s_time.addDate(0, 1 + repeat_freq, 0);
+					s_time = s_time.addDate(0, repeat_freq, 0);
 				}
 			}
 			else if (repeat_interval == "Annually") {
@@ -177,7 +177,7 @@ onRecordBeforeUpdateRequest((e) => {
 					let collection = $app.dao().findCollectionByNameOrId("alert");
 					const record = new Record(collection, { "reminder": id, "owner": owner, "secondary_user": secondary_user, "type": type, "title": title, "description": description, "app": app, "triggdate": s_time, "triggtime": duetime, "active": true, "email": email, "wfname": wf });
 					$app.dao().saveRecord(record);
-					s_time = s_time.addDate(1 + repeat_freq, 0, 0);
+					s_time = s_time.addDate(repeat_freq, 0, 0);
 				}
 
 
