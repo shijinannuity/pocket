@@ -7,7 +7,6 @@
 						email:String
 			file:multipart
 			description:string
-			password:stringg
 		response:
 				Success:
 						StatusCode:204

@@ -9,9 +9,33 @@
 <p align='left'>Title:{{.title}}<br>
         Description:{{.description}}<br>
         App name:{{.app}}<br>
-	Workflow:{{.workflow}}<br>
-	Date:{{.date}}<br>
-	Time:{{.time}}<br></p>
+		Workflow:{{.workflow}}<br>
+		Date:{{.date}}<br>
+	<!-- Time:{{.time}}<br> -->
+</p>
+
+	<!-- Date:<div id="date_in_email_notify_html_template">{{.date}}</div><br>
+	</p> -->
 {{end}}
 {{define "foot"}}
+<!-- <script>
+	// const escapeHTMLPolicy = trustedTypes.createPolicy("myEscapePolicy", {
+	// 		createHTML: (string) => string.replace(/</g, "&lt;"),
+	// 		});
+
+	// //let el = document.getElementById("myDiv");
+	
+	// // console.log(escaped instanceof TrustedHTML); // true
+	// // el.innerHTML = escaped;
+	let date=document.getElementById("date_in_email_notify_html_template").value()
+	console.log(`date  from template  :::: ${date}` instanceof TrustedHTML )
+	ndate=date.substring(0,19)
+	var newdate = new Date(`${ndate} +0000`);
+	console.log(`date after from template  :::: ${newdate}` instanceof TrustedHTML )
+	// const escaped = escapeHTMLPolicy.createHTML(`<h6>${newdate}<h6>`);
+	document.getElementById("date_in_email_notify_html_template").innerHTML=newdate
+</script> -->
+
+
+
 {{end}}
