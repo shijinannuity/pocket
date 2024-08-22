@@ -11,7 +11,7 @@ onRecordAfterCreateRequest((e) => {
 	let email = e.record.get("email_notification")
 	console.log(`emailnot:: ${email}`)
 	let repeat_freq = e.record.get("repeatfreq")
-	let id_copy = id
+	//let id_copy = id
 	console.log("\nReminder hook\n-------\n");
 	let data = $apis.requestInfo(e.httpContext).data;
 	let type = data["type"];
@@ -48,6 +48,7 @@ onRecordAfterCreateRequest((e) => {
 		console.log(`"app": ${app},`);
 		console.log(`"duedate":${duedate}`)
 		console.log(`duetime:${duetime}`)
+		//console.log(`terminatedate  ::  ${data['terminatedate']}`)
 		//let data={ "id":id,"owner":owner,"secondary_user":secondary_user, "type": type, "title": title, "description": description,"app": app, "duedate":duedate ,"duetime":duetime,"active":true,"email":email};
 		// console.log("before calling")
 

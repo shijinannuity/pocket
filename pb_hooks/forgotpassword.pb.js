@@ -9,13 +9,13 @@ routerAdd("POST", "/sendpasswordresetotp", (c) => {
 	} catch (e) {
 		return c.json(400, { "message": "Email not exist   !!!" })
 	}
-	const html = $template.loadFiles(
+	let html = $template.loadFiles(
 		`${__hooks}/view/emailtemplate.html`,
 		`${__hooks}/view/forgotmail.html`
 	).render({
 		"otp": otp,
 	})
-	const message = new MailerMessage({
+	let message = new MailerMessage({
 		from: {
 			address: $app.settings().meta.senderAddress,
 			name: $app.settings().meta.appName + " " + $app.settings().meta.senderName,
@@ -37,8 +37,30 @@ routerAdd("POST", "/sendpasswordresetotp", (c) => {
 	let res = $http.send({
 		url: "http://localhost:3000/message",
 		method: "POST",
-		body: JSON.stringify({ "message": `Here is your verification code:${otp2} `, "to": rec.get("phone_number") })
+		body: JSON.stringify({ "message": `Your one-time passcode (OTP) from Annuity Risk is ${otp2} .`, "to": rec.get("phone_number") })
 	})
+	//  html = $template.loadFiles(
+	// 	`${__hooks}/view/emailtemplate.html`,
+	// 	`${__hooks}/view/forgotmail.html`
+	// ).render({
+	// 	"otp": otp2,
+	// })
+	//  message = new MailerMessage({
+	// 	from: {
+	// 		address: $app.settings().meta.senderAddress,
+	// 		name: $app.settings().meta.appName + " " + $app.settings().meta.senderName,
+
+	// 	},
+	// 	to: [{
+	// 		address: email
+	// 	}],
+	// 	subject: "Password reset Mobile OTP",
+	// 	// html: "<H1>2FA code</H1><DIV>Here is your verification code:</DIV>"+
+	// 	//	`<H3 background='#f0adc6' color='#f51b6e'>${otp}</H3>`+
+	// 	//	"<DIV>Please make sure you never share this code with anyone.</DIV>"
+	// 	html: html
+	// })
+	// $app.newMailClient().send(message)
 	let collection = $app.dao().findCollectionByNameOrId("passwordreset")
 
 	const record = new Record(collection, { "mailotp": otp, 'mobileotp': otp2, "time": time.toString(), "email": email })

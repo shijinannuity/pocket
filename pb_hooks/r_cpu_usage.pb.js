@@ -3,7 +3,8 @@ routerAdd("POST", "/cpu_usage", (c) => {
 	let data = info.data
 	console.log(data)
 	let collection = $app.dao().findCollectionByNameOrId("cpu_usage")
-	//	console.log(`isfile::: ${data.isfile}`)
+	console.log(`Inside r_cpu_usg :::: \n-------------------`)
+	console.log(`isfile::: ${data.isfile}`)
 	let message = c.formValue("text")
 	let data_id = c.formValue('text_id')
 	let type = c.formValue("type")
@@ -28,6 +29,7 @@ routerAdd("POST", "/cpu_usage", (c) => {
 			let f = $filesystem.fileFromMultipart(c.formFile("file"))
 			form.addFiles("file", f)
 			form.submit()
+			console.log(`-------------------`)
 			return c.noContent(204)
 		} catch (e) {
 
